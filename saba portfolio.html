@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Saba Gull — Portfolio 2025</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --dark: #1a1610;
+  --dark2: #252018;
+  --gold: #c9a84c;
+  --gold-light: #e8d5a0;
+  --white: #ffffff;
+  --off-white: #f8f6f1;
+  --blue: #1a3a5c;
+  --blue2: #2a5298;
+  --blue-light: #e8f0fa;
+  --ink: #111827;
+  --ink-muted: #6b7280;
+  --line: #e5e7eb;
+  --serif: 'Playfair Display', Georgia, serif;
+  --sans: 'DM Sans', sans-serif;
+  --mono: 'DM Mono', monospace;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:var(--sans);background:var(--white);color:var(--ink);overflow-x:hidden;cursor:none;}
+
+/* Cursor */
+.cur-dot{position:fixed;width:7px;height:7px;background:var(--gold);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);}
+.cur-ring{position:fixed;width:30px;height:30px;border:1.5px solid var(--blue);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:transform .25s ease,width .25s,height .25s;}
+
+/* ═══ LOADER ═══ */
+#loader{
+  position:fixed;inset:0;background:var(--blue);z-index:10000;
+  display:flex;align-items:center;justify-content:center;flex-direction:column;gap:20px;
+  transition:opacity .7s,visibility .7s;
+}
+#loader.hide{opacity:0;visibility:hidden;pointer-events:none;}
+.load-title{font-family:var(--serif);font-size:clamp(2.5rem,5vw,4.5rem);color:var(--white);letter-spacing:.05em;}
+.load-title span{display:inline-block;opacity:0;transform:translateY(20px);animation:lchar .5s forwards;}
+.load-bar{width:180px;height:2px;background:#333;border-radius:2px;overflow:hidden;}
+.load-fill{height:100%;background:var(--white);width:0;animation:lbar 2s ease forwards;}
+@keyframes lchar{to{opacity:1;transform:none;}}
+@keyframes lbar{to{width:100%;}}
+
+/* ═══ COVER PAGE — Full Blue/White ═══ */
+#cover{
+  height:100vh;display:flex;align-items:center;justify-content:center;
+  position:relative;
+  background:linear-gradient(135deg,var(--blue) 0%,var(--blue2) 60%,#3a6bbf 100%);
+  overflow:hidden;
+}
+/* decorative bg circle */
+#cover::before{
+  content:'SG';
+  position:absolute;right:-60px;bottom:-80px;
+  font-family:var(--serif);font-size:340px;font-weight:900;
+  color:rgba(255,255,255,.05);line-height:1;pointer-events:none;user-select:none;
+}
+#cover::after{
+  content:'';
+  position:absolute;top:-120px;left:-120px;
+  width:500px;height:500px;border-radius:50%;
+  background:rgba(255,255,255,.04);pointer-events:none;
+}
+/* Left — blue cover (now full width, centred) */
+.cover-left{
+  background:transparent;
+  padding:0;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;
+  position:relative;z-index:2;
+  opacity:0;animation:fadeIn 1s 2.1s ease forwards;
+  width:100%;max-width:700px;
+}
+.cover-tag{font-family:var(--mono);font-size:.75rem;letter-spacing:.24em;color:rgba(255,255,255,.6);text-transform:uppercase;margin-bottom:28px;}
+.cover-quote{
+  font-family:var(--serif);font-size:clamp(1rem,1.6vw,1.2rem);
+  font-style:italic;color:rgba(255,255,255,.7);line-height:1.8;
+  border-left:none;border-top:1px solid rgba(255,255,255,.2);border-bottom:1px solid rgba(255,255,255,.2);
+  padding:16px 32px;margin:28px 0;
+}
+.cover-name-wrap{margin-bottom:8px;}
+.cover-name-first{
+  font-family:var(--serif);font-size:clamp(4rem,9vw,8rem);
+  font-weight:900;color:var(--white);line-height:.95;letter-spacing:-.02em;display:block;
+  opacity:0;animation:slideUp .8s 2.3s ease forwards;
+}
+.cover-name-last{
+  font-family:var(--serif);font-size:clamp(4rem,9vw,8rem);
+  font-weight:900;font-style:italic;color:rgba(255,255,255,.85);line-height:.95;letter-spacing:-.02em;display:block;
+  opacity:0;animation:slideUp .8s 2.5s ease forwards;
+}
+.cover-divider{width:64px;height:2.5px;background:rgba(255,255,255,.5);margin:20px auto;opacity:0;animation:fadeIn .6s 2.7s ease forwards;}
+.cover-sub{font-family:var(--mono);font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.55);line-height:2.2;}
+.cover-univ{font-family:var(--mono);font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.35);margin-top:8px;}
+.cover-enter-btn{
+  margin-top:36px;display:inline-flex;align-items:center;gap:10px;
+  background:var(--white);color:var(--blue);padding:14px 36px;
+  font-family:var(--sans);font-size:.82rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+  text-decoration:none;border:none;cursor:pointer;transition:all .3s;border-radius:4px;
+}
+.cover-enter-btn:hover{background:var(--blue-light);transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.2);}
+
+/* Hide TOC / right panel / spine */
+.cover-right{display:none !important;}
+.book-spine{display:none !important;}
+
+/* ═══ NAV ═══ */
+nav{
+  position:fixed;top:0;width:100%;z-index:1000;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:18px 60px;background:rgba(255,255,255,.95);
+  backdrop-filter:blur(16px);border-bottom:1px solid var(--line);
+  transform:translateY(-100%);animation:slideDown .7s 2.8s ease forwards;
+}
+@keyframes slideDown{to{transform:translateY(0);}}
+.nav-logo{font-family:var(--serif);font-size:1.2rem;font-weight:700;color:var(--blue);letter-spacing:.04em;}
+.nav-links{display:flex;gap:32px;list-style:none;}
+.nav-links a{font-size:.78rem;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-muted);text-decoration:none;position:relative;transition:color .3s;}
+.nav-links a::after{content:'';position:absolute;bottom:-3px;left:0;width:0;height:1.5px;background:var(--gold);transition:width .3s;}
+.nav-links a:hover{color:var(--ink);}
+.nav-links a:hover::after{width:100%;}
+
+/* ═══ INNER PAGES WRAPPER ═══ */
+#main-content{display:none;}
+#main-content.open{display:block;}
+
+/* ═══ COMMON SECTION ═══ */
+.page-section{padding:90px 60px;background:var(--white);}
+.page-section.alt{background:var(--off-white);}
+.sec-eyebrow{font-family:var(--mono);font-size:.7rem;letter-spacing:.2em;color:var(--gold);text-transform:uppercase;display:block;margin-bottom:8px;}
+h2.sec-title{font-family:var(--serif);font-size:clamp(2.2rem,4vw,3rem);font-weight:700;color:var(--ink);line-height:1.1;}
+.sec-rule{width:56px;height:3px;background:linear-gradient(90deg,var(--blue),var(--gold));margin-top:14px;border-radius:2px;}
+.sec-header{margin-bottom:56px;}
+
+/* ═══ ABOUT ═══ */
+.about-grid{display:grid;grid-template-columns:1.1fr 1fr;gap:72px;align-items:start;}
+.about-text p{font-size:1rem;line-height:1.9;color:var(--ink-muted);margin-bottom:16px;}
+.about-text strong{color:var(--ink);font-weight:600;}
+.cgpa-badge{
+  display:inline-flex;align-items:center;gap:10px;
+  background:var(--blue-light);border:1px solid var(--blue);border-radius:4px;
+  padding:10px 18px;margin-bottom:24px;
+}
+.cgpa-num{font-family:var(--serif);font-size:1.8rem;font-weight:900;color:var(--blue);line-height:1;}
+.cgpa-label{font-size:.78rem;color:var(--blue);line-height:1.4;}
+.cgpa-label strong{display:block;font-size:.95rem;}
+.info-list{margin-top:24px;display:flex;flex-direction:column;gap:10px;}
+.info-item{display:flex;align-items:center;gap:12px;font-size:.9rem;color:var(--ink-muted);}
+.info-dot{width:6px;height:6px;background:var(--gold);border-radius:50%;flex-shrink:0;}
+.cert-badge{
+  display:flex;align-items:center;gap:14px;
+  background:linear-gradient(135deg,var(--blue) 0%,var(--blue2) 100%);
+  border-radius:6px;padding:16px 20px;margin-top:20px;
+}
+.cert-icon{font-size:1.8rem;}
+.cert-text{}
+.cert-title{font-size:.9rem;font-weight:600;color:var(--white);margin-bottom:2px;}
+.cert-sub{font-size:.75rem;color:rgba(255,255,255,.65);}
+
+/* Skills */
+.skills-wrap{display:flex;flex-direction:column;gap:14px;}
+.skill-block{background:var(--white);border:1px solid var(--line);border-radius:6px;padding:18px 20px;transition:all .3s;}
+.skill-block:hover{border-color:var(--gold);box-shadow:0 4px 16px rgba(201,168,76,.15);}
+.skill-cat-lbl{font-family:var(--mono);font-size:.65rem;letter-spacing:.14em;text-transform:uppercase;color:var(--blue);margin-bottom:10px;font-weight:500;}
+.tags{display:flex;flex-wrap:wrap;gap:6px;}
+.tag{font-size:.73rem;font-family:var(--mono);padding:4px 10px;border-radius:20px;background:var(--off-white);border:1px solid var(--line);color:var(--ink-muted);transition:all .2s;}
+.tag:hover{background:var(--blue);color:#fff;border-color:var(--blue);}
+
+/* ═══ PROJECTS ═══ */
+.proj-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;}
+.proj-card{
+  background:var(--white);border:1px solid var(--line);border-radius:8px;
+  overflow:hidden;transition:all .4s cubic-bezier(.25,.46,.45,.94);
+  display:flex;flex-direction:column;
+}
+.proj-card:hover{transform:translateY(-6px);box-shadow:0 20px 48px rgba(0,0,0,.1);border-color:transparent;}
+.proj-img{
+  width:100%;height:160px;display:flex;align-items:center;justify-content:center;
+  font-size:3.5rem;position:relative;overflow:hidden;
+}
+.proj-img::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 50%,rgba(0,0,0,.18) 100%);}
+.proj-body{padding:22px 20px 24px;flex:1;display:flex;flex-direction:column;}
+.proj-num{font-family:var(--mono);font-size:.65rem;color:var(--gold);letter-spacing:.14em;margin-bottom:8px;}
+.proj-title{font-family:var(--serif);font-size:1.08rem;font-weight:700;color:var(--ink);margin-bottom:10px;line-height:1.3;}
+.proj-desc{font-size:.84rem;line-height:1.7;color:var(--ink-muted);margin-bottom:14px;flex:1;}
+.proj-tech{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:14px;}
+.tech-pill{font-size:.68rem;font-family:var(--mono);padding:3px 8px;background:var(--blue-light);color:var(--blue);border-radius:3px;}
+.proj-link{display:inline-flex;align-items:center;gap:6px;font-size:.78rem;font-weight:600;color:var(--blue);text-decoration:none;letter-spacing:.04em;transition:gap .3s,color .3s;}
+.proj-link:hover{gap:10px;color:var(--gold);}
+
+/* ═══ EDUCATION ═══ */
+.edu-timeline{position:relative;padding-left:36px;}
+.edu-timeline::before{content:'';position:absolute;left:0;top:10px;bottom:10px;width:1.5px;background:linear-gradient(180deg,var(--blue),var(--gold));}
+.edu-item{position:relative;margin-bottom:44px;}
+.edu-item::before{content:'';position:absolute;left:-43px;top:10px;width:14px;height:14px;border-radius:50%;background:var(--white);border:2.5px solid var(--blue);transition:background .3s;}
+.edu-item:hover::before{background:var(--gold);border-color:var(--gold);}
+.edu-period{font-family:var(--mono);font-size:.7rem;color:var(--gold);letter-spacing:.12em;margin-bottom:5px;}
+.edu-deg{font-family:var(--serif);font-size:1.2rem;font-weight:700;color:var(--ink);margin-bottom:4px;}
+.edu-inst{font-size:.88rem;color:var(--ink-muted);}
+.edu-note{display:inline-block;margin-top:8px;font-size:.75rem;font-family:var(--mono);padding:3px 10px;background:var(--blue-light);color:var(--blue);border-radius:3px;}
+
+/* ═══ ACHIEVEMENTS ═══ */
+.ach-section{background:var(--blue);}
+.ach-section .sec-eyebrow{color:var(--gold);}
+.ach-section h2.sec-title{color:var(--white);}
+.ach-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+.ach-card{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:8px;padding:32px 24px;text-align:center;transition:all .3s;}
+.ach-card:hover{background:rgba(255,255,255,.14);transform:translateY(-4px);}
+.ach-icon{font-size:2.2rem;display:block;margin-bottom:14px;}
+.ach-title{font-family:var(--serif);font-size:1rem;font-weight:700;color:var(--white);margin-bottom:8px;}
+.ach-desc{font-size:.82rem;color:rgba(255,255,255,.6);line-height:1.7;}
+
+/* ═══ CONTACT ═══ */
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:start;}
+.contact-intro{font-size:1rem;line-height:1.9;color:var(--ink-muted);margin-bottom:32px;}
+.contact-items{display:flex;flex-direction:column;gap:14px;}
+.c-item{display:flex;align-items:center;gap:14px;padding:14px 18px;border:1px solid var(--line);border-radius:6px;text-decoration:none;color:var(--ink);background:var(--white);transition:all .3s;}
+.c-item:hover{border-color:var(--gold);transform:translateX(5px);box-shadow:0 4px 16px rgba(0,0,0,.06);}
+.c-ico{font-size:1.1rem;width:36px;height:36px;background:var(--blue-light);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.c-lbl{font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-muted);}
+.c-val{font-size:.88rem;font-weight:500;color:var(--ink);}
+.social-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.soc-card{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;padding:28px 20px;border:1px solid var(--line);border-radius:6px;text-decoration:none;color:var(--ink);background:var(--white);transition:all .3s;text-align:center;}
+.soc-card:hover{background:var(--blue);color:var(--white);border-color:var(--blue);transform:translateY(-4px);box-shadow:0 8px 24px rgba(26,58,92,.2);}
+.soc-icon{font-size:1.6rem;}
+.soc-name{font-size:.78rem;font-weight:600;letter-spacing:.06em;}
+.soc-url{font-size:.68rem;color:inherit;opacity:.7;font-family:var(--mono);}
+
+/* ═══ FOOTER ═══ */
+footer{background:var(--blue);color:rgba(255,255,255,.5);text-align:center;padding:28px 60px;font-size:.75rem;letter-spacing:.08em;display:flex;align-items:center;justify-content:space-between;}
+footer strong{color:var(--white);}
+.f-pipe{width:1px;height:16px;background:rgba(255,255,255,.12);}
+
+/* ═══ SCROLL REVEAL ═══ */
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .7s ease,transform .7s ease;}
+.reveal.vis{opacity:1;transform:none;}
+
+/* ═══ ANIMATIONS ═══ */
+@keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+@keyframes slideUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:none;}}
+
+/* Scrollbar */
+::-webkit-scrollbar{width:5px;}
+::-webkit-scrollbar-track{background:var(--off-white);}
+::-webkit-scrollbar-thumb{background:var(--gold);border-radius:2px;}
+
+/* Mobile */
+@media(max-width:860px){
+  #cover{grid-template-columns:1fr;height:auto;}
+  .cover-left{height:60vh;}
+  .cover-right{height:auto;padding:40px 32px;}
+  .book-spine{display:none;}
+  nav{padding:14px 24px;}
+  .page-section{padding:60px 24px;}
+  .proj-grid{grid-template-columns:1fr;}
+  .about-grid,.contact-grid{grid-template-columns:1fr;gap:40px;}
+  .ach-grid{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<!-- Cursor -->
+<div class="cur-dot" id="dot"></div>
+<div class="cur-ring" id="ring"></div>
+
+<!-- Loader -->
+<div id="loader">
+  <div class="load-title">
+    <span style="animation-delay:.1s">S</span><span style="animation-delay:.2s">a</span><span style="animation-delay:.3s">b</span><span style="animation-delay:.4s">a</span>&nbsp;<span style="animation-delay:.6s">G</span><span style="animation-delay:.7s">u</span><span style="animation-delay:.8s">l</span><span style="animation-delay:.9s">l</span>
+  </div>
+  <div class="load-bar"><div class="load-fill"></div></div>
+</div>
+
+<!-- Nav (hidden until book opens) -->
+<nav id="site-nav">
+  <div class="nav-logo">Saba Gull</div>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#education">Education</a></li>
+    <li><a href="#achievements">Achievements</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- ═══ COVER PAGE ═══ -->
+<div id="cover">
+  <div class="cover-left">
+    <div class="cover-tag">Portfolio · 2025</div>
+    <div class="cover-name-wrap">
+      <span class="cover-name-first">Saba</span>
+      <span class="cover-name-last">Gull</span>
+    </div>
+    <div class="cover-divider"></div>
+    <div class="cover-quote">
+      "Building things that work, and interfaces that feel right."
+    </div>
+    <div class="cover-sub">
+      Computer Science · Rawalpindi, Pakistan<br/>
+      CGPA 3.83 / 4.0
+    </div>
+    <div class="cover-univ">Fatima Jinnah Women University · 2025</div>
+    <button class="cover-enter-btn" onclick="openBook(); document.getElementById('about').scrollIntoView({behavior:'smooth'});">
+      View Portfolio &nbsp;→
+    </button>
+  </div>
+</div>
+
+<!-- ═══ MAIN CONTENT (shown after "Open Book") ═══ -->
+<div id="main-content">
+
+<!-- ── About ── -->
+<section class="page-section" id="about">
+  <div class="sec-header reveal">
+    <span class="sec-eyebrow">I — About Me</span>
+    <h2 class="sec-title">Who I Am</h2>
+    <div class="sec-rule"></div>
+  </div>
+  <div class="about-grid">
+    <div class="reveal">
+      <div class="cgpa-badge">
+        <div class="cgpa-num">3.83</div>
+        <div class="cgpa-label"><strong>CGPA</strong>out of 4.0</div>
+      </div>
+      <div class="about-text">
+        <p>Computer Science student at <strong>Fatima Jinnah Women University</strong>, 6th Semester (2023–2027), with a <strong>CGPA of 3.83/4.0</strong>.</p>
+        <p>Focused on web development, data analytics, mobile applications, and distributed systems. I build practical, well-crafted solutions — from complaint management platforms to large-scale data pipelines.</p>
+        <p><strong>Honahar Scholar</strong>, <strong>PM Laptop Scheme recipient</strong>, and <strong>Google AI Essentials certified</strong> — consistently committed to academic and technical growth.</p>
+      </div>
+      <div class="info-list">
+        <div class="info-item"><div class="info-dot"></div>📍 Rawalpindi, Pakistan</div>
+        <div class="info-item"><div class="info-dot"></div>📧 sabagu003@gmail.com</div>
+        <div class="info-item"><div class="info-dot"></div>📞 +92 315 5249257</div>
+        <div class="info-item"><div class="info-dot"></div>🌐 sabagullportfolio.wordpress.com</div>
+        <div class="info-item"><div class="info-dot"></div>🗣️ Urdu · English · Pashto</div>
+      </div>
+      <div class="cert-badge">
+        <div class="cert-icon">🎓</div>
+        <div class="cert-text">
+          <div class="cert-title">Google AI Essentials — Certified</div>
+          <div class="cert-sub">Artificial Intelligence · Machine Learning Fundamentals · Google</div>
+        </div>
+      </div>
+    </div>
+    <div id="skills" class="reveal">
+      <div class="skills-wrap">
+        <div class="skill-block">
+          <div class="skill-cat-lbl">Frontend Development</div>
+          <div class="tags"><span class="tag">HTML5</span><span class="tag">CSS3</span><span class="tag">JavaScript</span><span class="tag">Responsive Design</span></div>
+        </div>
+        <div class="skill-block">
+          <div class="skill-cat-lbl">Backend & Database</div>
+          <div class="tags"><span class="tag">PHP</span><span class="tag">MySQL</span><span class="tag">XAMPP</span><span class="tag">Java</span><span class="tag">SQL</span></div>
+        </div>
+        <div class="skill-block">
+          <div class="skill-cat-lbl">Data & Distributed Systems</div>
+          <div class="tags"><span class="tag">Python</span><span class="tag">Hadoop HDFS</span><span class="tag">MapReduce</span><span class="tag">Data Analytics</span><span class="tag">C/C++</span></div>
+        </div>
+        <div class="skill-block">
+          <div class="skill-cat-lbl">Design & Tools</div>
+          <div class="tags"><span class="tag">Figma</span><span class="tag">Canva</span><span class="tag">VS Code</span><span class="tag">Android Studio</span><span class="tag">Eclipse IDE</span></div>
+        </div>
+        <div class="skill-block">
+          <div class="skill-cat-lbl">Artificial Intelligence</div>
+          <div class="tags"><span class="tag">Google AI Essentials</span><span class="tag">AI Fundamentals</span><span class="tag">ML Concepts</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Projects ── -->
+<section class="page-section alt" id="projects">
+  <div class="sec-header reveal">
+    <span class="sec-eyebrow">III — Projects</span>
+    <h2 class="sec-title">What I've Built</h2>
+    <div class="sec-rule"></div>
+  </div>
+  <div class="proj-grid">
+
+    <div class="proj-card reveal">
+      <div class="proj-img" style="background:linear-gradient(135deg,#1a3a5c 0%,#2a5298 100%);">🏛️</div>
+      <div class="proj-body">
+        <span class="proj-num">01 — Web Application</span>
+        <h3 class="proj-title">University Complaint Management System (UCMS)</h3>
+        <p class="proj-desc">A full-stack web platform enabling students to submit, track, and resolve complaints digitally — streamlining university administrative workflows.</p>
+        <div class="proj-tech"><span class="tech-pill">HTML</span><span class="tech-pill">CSS</span><span class="tech-pill">JavaScript</span><span class="tech-pill">PHP</span><span class="tech-pill">MySQL</span></div>
+        <a href="https://github.com/sabagu003-ui" target="_blank" class="proj-link">View on GitHub →</a>
+      </div>
+    </div>
+
+    <div class="proj-card reveal">
+      <div class="proj-img" style="background:linear-gradient(135deg,#0f4c2a 0%,#1a7a42 100%);">📊</div>
+      <div class="proj-body">
+        <span class="proj-num">02 — Data Analytics</span>
+        <h3 class="proj-title">Global Pharmacy Sales Analysis</h3>
+        <p class="proj-desc">Data analytics project examining global pharmaceutical sales trends and market insights using Python-based processing and visualization.</p>
+        <div class="proj-tech"><span class="tech-pill">Python</span><span class="tech-pill">Pandas</span><span class="tech-pill">Data Visualization</span><span class="tech-pill">SQL</span></div>
+        <a href="https://github.com/sabagu003-ui" target="_blank" class="proj-link">View on GitHub →</a>
+      </div>
+    </div>
+
+    <div class="proj-card reveal">
+      <div class="proj-img" style="background:linear-gradient(135deg,#4a1942 0%,#8b3a8b 100%);">📱</div>
+      <div class="proj-body">
+        <span class="proj-num">03 — Mobile & Web App</span>
+        <h3 class="proj-title">SkillLink — Student Skills Marketplace</h3>
+        <p class="proj-desc">A platform where students list and sell their skills, and universities can browse and purchase services — connecting student talent with institutional needs.</p>
+        <div class="proj-tech"><span class="tech-pill">Android Studio</span><span class="tech-pill">Java</span><span class="tech-pill">PHP</span><span class="tech-pill">MySQL</span><span class="tech-pill">Figma</span></div>
+        <a href="https://github.com/sabagu003-ui" target="_blank" class="proj-link">View on GitHub →</a>
+      </div>
+    </div>
+
+    <div class="proj-card reveal">
+      <div class="proj-img" style="background:linear-gradient(135deg,#7a3a10 0%,#c96020 100%);">🕷️</div>
+      <div class="proj-body">
+        <span class="proj-num">04 — Web Scraping</span>
+        <h3 class="proj-title">Automated Web Crawler</h3>
+        <p class="proj-desc">An automated web crawling system designed to systematically browse and extract structured data from websites — built for research, data collection, and information aggregation purposes.</p>
+        <div class="proj-tech"><span class="tech-pill">Python</span><span class="tech-pill">BeautifulSoup</span><span class="tech-pill">Requests</span><span class="tech-pill">Automation</span></div>
+        <a href="https://github.com/sabagu003-ui" target="_blank" class="proj-link">View on GitHub →</a>
+      </div>
+    </div>
+
+    <div class="proj-card reveal">
+      <div class="proj-img" style="background:linear-gradient(135deg,#1a3a5c 0%,#0d2340 100%);">🗄️</div>
+      <div class="proj-body">
+        <span class="proj-num">05 — Distributed Systems</span>
+        <h3 class="proj-title">Hadoop Distributed File System</h3>
+        <p class="proj-desc">Implementation of the HDFS architecture — configuring two interconnected servers to communicate and access each other, demonstrating distributed data storage, fault tolerance, and parallel data processing.</p>
+        <div class="proj-tech"><span class="tech-pill">Hadoop</span><span class="tech-pill">HDFS</span><span class="tech-pill">Java</span><span class="tech-pill">MapReduce</span><span class="tech-pill">Linux</span></div>
+        <a href="https://github.com/sabagu003-ui" target="_blank" class="proj-link">View on GitHub →</a>
+      </div>
+    </div>
+
+    <div class="proj-card reveal">
+      <div class="proj-img" style="background:linear-gradient(135deg,#2a5a1a 0%,#3d7a2a 100%);">🅿️</div>
+      <div class="proj-body">
+        <span class="proj-num">06 — Automation System</span>
+        <h3 class="proj-title">Automatic Car Parking Gate System</h3>
+        <p class="proj-desc">An automated gate control system for car parking facilities — designed to detect vehicles and trigger gate operations automatically, integrating hardware concepts with software logic.</p>
+        <div class="proj-tech"><span class="tech-pill">C/C++</span><span class="tech-pill">Automation</span><span class="tech-pill">Sensors</span><span class="tech-pill">Embedded Systems</span></div>
+        <a href="https://github.com/sabagu003-ui" target="_blank" class="proj-link">View on GitHub →</a>
+      </div>
+    </div>
+
+    <div class="proj-card reveal">
+      <div class="proj-img" style="background:linear-gradient(135deg,#1a4a5c 0%,#1a7a8a 100%);">🖧</div>
+      <div class="proj-body">
+        <span class="proj-num">07 — Networking</span>
+        <h3 class="proj-title">Server Configuration & Connection</h3>
+        <p class="proj-desc">A networking project configuring two servers to connect and communicate with each other, enabling mutual access and resource sharing — demonstrating core concepts of server administration and network protocols.</p>
+        <div class="proj-tech"><span class="tech-pill">Server Config</span><span class="tech-pill">Networking</span><span class="tech-pill">Linux</span><span class="tech-pill">SSH</span></div>
+        <a href="https://github.com/sabagu003-ui" target="_blank" class="proj-link">View on GitHub →</a>
+      </div>
+    </div>
+
+    <div class="proj-card reveal">
+      <div class="proj-img" style="background:linear-gradient(135deg,#3a1a5c 0%,#6a2a9a 100%);">🎮</div>
+      <div class="proj-body">
+        <span class="proj-num">08 — Interactive Apps</span>
+        <h3 class="proj-title">Online Quiz App & Math Game</h3>
+        <p class="proj-desc">Two interactive browser-based applications: a quiz platform with real-time scoring and instant feedback, plus a math problem-solving game designed to make learning engaging and enjoyable.</p>
+        <div class="proj-tech"><span class="tech-pill">HTML</span><span class="tech-pill">CSS</span><span class="tech-pill">JavaScript</span></div>
+        <a href="https://github.com/sabagu003-ui" target="_blank" class="proj-link">View on GitHub →</a>
+      </div>
+    </div>
+
+    <div class="proj-card reveal">
+      <div class="proj-img" style="background:linear-gradient(135deg,#5c3a1a 0%,#9a6a2a 100%);">🏆</div>
+      <div class="proj-body">
+        <span class="proj-num">09 — Management System</span>
+        <h3 class="proj-title">Player Management System</h3>
+        <p class="proj-desc">A database-driven system for managing player profiles, team rosters, and match records — complete with full CRUD operations and an intuitive administrative dashboard.</p>
+        <div class="proj-tech"><span class="tech-pill">PHP</span><span class="tech-pill">MySQL</span><span class="tech-pill">HTML</span><span class="tech-pill">CSS</span></div>
+        <a href="https://github.com/sabagu003-ui" target="_blank" class="proj-link">View on GitHub →</a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── Education ── -->
+<section class="page-section" id="education">
+  <div class="sec-header reveal">
+    <span class="sec-eyebrow">IV — Education</span>
+    <h2 class="sec-title">Academic Journey</h2>
+    <div class="sec-rule"></div>
+  </div>
+  <div class="edu-timeline reveal">
+    <div class="edu-item">
+      <div class="edu-period">2023 — Present</div>
+      <div class="edu-deg">Bachelor of Computer Science — 6th Semester</div>
+      <div class="edu-inst">Fatima Jinnah Women University · The Mall, Rawalpindi</div>
+      <span class="edu-note">CGPA: 3.83 / 4.0 &nbsp;·&nbsp; Google AI Essentials Certified</span>
+    </div>
+    <div class="edu-item">
+      <div class="edu-period">2021 — 2023</div>
+      <div class="edu-deg">Intermediate in Computer Science</div>
+      <div class="edu-inst">F.G Degree College for Women · AMR Rawalpindi</div>
+    </div>
+    <div class="edu-item">
+      <div class="edu-period">2019 — 2021</div>
+      <div class="edu-deg">Matriculation in Biology</div>
+      <div class="edu-inst">F.G High School for Girls · AMR Rawalpindi</div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Achievements ── -->
+<section class="page-section ach-section" id="achievements">
+  <div class="sec-header reveal">
+    <span class="sec-eyebrow">— Achievements</span>
+    <h2 class="sec-title">Recognitions & Honours</h2>
+    <div class="sec-rule"></div>
+  </div>
+  <div class="ach-grid">
+    <div class="ach-card reveal">
+      <span class="ach-icon">🏆</span>
+      <div class="ach-title">Honahar Scholarship</div>
+      <div class="ach-desc">Awarded for consistently outstanding academic performance — recognising dedication, hard work, and intellectual merit throughout my degree programme.</div>
+    </div>
+    <div class="ach-card reveal">
+      <span class="ach-icon">💻</span>
+      <div class="ach-title">PM Laptop Scheme Recipient</div>
+      <div class="ach-desc">Selected under the Prime Minister Youth Program Laptop Scheme — a national initiative honouring high-achieving students in Pakistan's technology sector.</div>
+    </div>
+    <div class="ach-card reveal">
+      <span class="ach-icon">🎓</span>
+      <div class="ach-title">Google AI Essentials</div>
+      <div class="ach-desc">Completed Google's AI Essentials certification, gaining foundational knowledge in artificial intelligence, machine learning concepts, and responsible AI practices.</div>
+    </div>
+    <div class="ach-card reveal">
+      <span class="ach-icon">⭐</span>
+      <div class="ach-title">CGPA 3.83 / 4.0</div>
+      <div class="ach-desc">Maintaining a high GPA of 3.83 out of 4.0 across all semesters — reflecting consistent academic excellence and strong command of core CS subjects.</div>
+    </div>
+    <div class="ach-card reveal">
+      <span class="ach-icon">✅</span>
+      <div class="ach-title">100% On-Time Delivery</div>
+      <div class="ach-desc">Successfully delivered all academic and personal projects on time and to a high standard — demonstrating reliability, discipline, and commitment to quality.</div>
+    </div>
+    <div class="ach-card reveal">
+      <span class="ach-icon">🌐</span>
+      <div class="ach-title">Portfolio Website</div>
+      <div class="ach-desc">Independently designed and published a personal portfolio website showcasing projects, skills, and achievements in a professional and accessible format.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Contact ── -->
+<section class="page-section" id="contact">
+  <div class="sec-header reveal">
+    <span class="sec-eyebrow">V — Contact</span>
+    <h2 class="sec-title">Let's Connect</h2>
+    <div class="sec-rule"></div>
+  </div>
+  <div class="contact-grid">
+    <div class="reveal">
+      <p class="contact-intro">
+        I am always open to new opportunities, collaborations, and meaningful conversations. Whether you have a project idea, internship opportunity, or simply wish to connect — I would be delighted to hear from you.
+      </p>
+      <div class="contact-items">
+        <a href="mailto:sabagu003@gmail.com" class="c-item">
+          <div class="c-ico">✉️</div>
+          <div><div class="c-lbl">Email</div><div class="c-val">sabagu003@gmail.com</div></div>
+        </a>
+        <a href="tel:+923155249257" class="c-item">
+          <div class="c-ico">📞</div>
+          <div><div class="c-lbl">Phone</div><div class="c-val">+92 315 5249257</div></div>
+        </a>
+        <a href="https://sabagullportfolio.wordpress.com" target="_blank" class="c-item">
+          <div class="c-ico">🌐</div>
+          <div><div class="c-lbl">Portfolio</div><div class="c-val">sabagullportfolio.wordpress.com</div></div>
+        </a>
+      </div>
+    </div>
+    <div class="reveal">
+      <div class="social-grid">
+        <a href="https://linkedin.com/in/saba-gull-639018388" target="_blank" class="soc-card">
+          <span class="soc-icon">in</span>
+          <span class="soc-name">LinkedIn</span>
+          <span class="soc-url">linkedin.com/in/saba-gull</span>
+        </a>
+        <a href="https://github.com/sabagu003-ui" target="_blank" class="soc-card">
+          <span class="soc-icon">⌥</span>
+          <span class="soc-name">GitHub</span>
+          <span class="soc-url">github.com/sabagu003-ui</span>
+        </a>
+        <a href="https://sabagullportfolio.wordpress.com" target="_blank" class="soc-card">
+          <span class="soc-icon">📝</span>
+          <span class="soc-name">WordPress</span>
+          <span class="soc-url">sabagullportfolio</span>
+        </a>
+        <a href="mailto:sabagu003@gmail.com" class="soc-card">
+          <span class="soc-icon">✉</span>
+          <span class="soc-name">Email Me</span>
+          <span class="soc-url">sabagu003@gmail.com</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span>© 2025 <strong>Saba Gull</strong></span>
+  <div class="f-pipe"></div>
+  <span>CS Student · Rawalpindi, Pakistan</span>
+  <div class="f-pipe"></div>
+  <span>Fatima Jinnah Women University &nbsp;·&nbsp; CGPA 3.83</span>
+</footer>
+
+</div><!-- end main-content -->
+
+<script>
+/* Loader */
+window.addEventListener('load',()=>setTimeout(()=>document.getElementById('loader').classList.add('hide'),2100));
+
+/* Cursor */
+const dot=document.getElementById('dot'),ring=document.getElementById('ring');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;dot.style.left=mx+'px';dot.style.top=my+'px';});
+(function animR(){rx+=(mx-rx)*.14;ry+=(my-ry)*.14;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(animR);})();
+document.querySelectorAll('a,button,.proj-card,.skill-block,.ach-card,.soc-card').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{ring.style.width='48px';ring.style.height='48px';ring.style.opacity='.5';});
+  el.addEventListener('mouseleave',()=>{ring.style.width='30px';ring.style.height='30px';ring.style.opacity='1';});
+});
+
+/* Open Book */
+function openBook(){
+  const mc=document.getElementById('main-content');
+  mc.classList.add('open');
+  // slight delay for scroll
+  setTimeout(()=>{},100);
+}
+
+/* Nav active */
+window.addEventListener('scroll',()=>{
+  const secs=document.querySelectorAll('section[id]');
+  const links=document.querySelectorAll('.nav-links a');
+  let cur='';
+  secs.forEach(s=>{if(scrollY>=s.offsetTop-160)cur=s.id;});
+  links.forEach(a=>{a.style.color=a.getAttribute('href')==='#'+cur?'var(--ink)':'';});
+});
+
+/* Scroll Reveal */
+const obs=new IntersectionObserver(entries=>{
+  entries.forEach((e,i)=>{
+    if(e.isIntersecting)setTimeout(()=>e.target.classList.add('vis'),e.target.dataset.d||0);
+  });
+},{threshold:.1});
+document.querySelectorAll('.reveal').forEach((el,i)=>{el.dataset.d=(i%4)*90;obs.observe(el);});
+</script>
+</body>
+</html>
