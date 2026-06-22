@@ -25,11 +25,10 @@
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 html{scroll-behavior:smooth;}
-body{font-family:var(--sans);background:var(--white);color:var(--ink);overflow-x:hidden;cursor:none;}
+body{font-family:var(--sans);background:var(--white);color:var(--ink);overflow-x:hidden;}
 
 /* Cursor */
 .cur-dot{position:fixed;width:7px;height:7px;background:var(--gold);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);}
-.cur-ring{position:fixed;width:30px;height:30px;border:1.5px solid var(--blue);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:transform .25s ease,width .25s,height .25s;}
 
 /* ═══ LOADER ═══ */
 #loader{
@@ -117,9 +116,9 @@ nav{
   transform:translateY(-100%);animation:slideDown .7s 2.8s ease forwards;
 }
 @keyframes slideDown{to{transform:translateY(0);}}
-.nav-logo{font-family:var(--serif);font-size:1.2rem;font-weight:700;color:var(--blue);letter-spacing:.04em;}
+.nav-logo{font-family:var(--serif);font-size:1.2rem;font-weight:700;color:var(--blue);letter-spacing:.04em;flex-shrink:0;}
 .nav-links{display:flex;gap:32px;list-style:none;}
-.nav-links a{font-size:.78rem;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-muted);text-decoration:none;position:relative;transition:color .3s;}
+.nav-links a{font-size:.78rem;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-muted);text-decoration:none;position:relative;transition:color .3s;white-space:nowrap;}
 .nav-links a::after{content:'';position:absolute;bottom:-3px;left:0;width:0;height:1.5px;background:var(--gold);transition:width .3s;}
 .nav-links a:hover{color:var(--ink);}
 .nav-links a:hover::after{width:100%;}
@@ -254,7 +253,11 @@ footer strong{color:var(--white);}
   .cover-left{height:60vh;}
   .cover-right{height:auto;padding:40px 32px;}
   .book-spine{display:none;}
-  nav{padding:14px 24px;}
+  nav{padding:14px 18px;}
+  .nav-logo{font-size:1rem;}
+  .nav-links{gap:14px;overflow-x:auto;-webkit-overflow-scrolling:touch;max-width:62vw;scrollbar-width:none;}
+  .nav-links::-webkit-scrollbar{display:none;}
+  .nav-links a{font-size:.66rem;letter-spacing:.08em;}
   .page-section{padding:60px 24px;}
   .proj-grid{grid-template-columns:1fr;}
   .about-grid,.contact-grid{grid-template-columns:1fr;gap:40px;}
@@ -264,9 +267,8 @@ footer strong{color:var(--white);}
 </head>
 <body>
 
-<!-- Cursor -->
+<!-- Cursor (simple dot only) -->
 <div class="cur-dot" id="dot"></div>
-<div class="cur-ring" id="ring"></div>
 
 <!-- Loader -->
 <div id="loader">
@@ -621,23 +623,29 @@ footer strong{color:var(--white);}
 /* Loader */
 window.addEventListener('load',()=>setTimeout(()=>document.getElementById('loader').classList.add('hide'),2100));
 
-/* Cursor */
-const dot=document.getElementById('dot'),ring=document.getElementById('ring');
-let mx=0,my=0,rx=0,ry=0;
-document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;dot.style.left=mx+'px';dot.style.top=my+'px';});
-(function animR(){rx+=(mx-rx)*.14;ry+=(my-ry)*.14;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(animR);})();
-document.querySelectorAll('a,button,.proj-card,.skill-block,.ach-card,.soc-card').forEach(el=>{
-  el.addEventListener('mouseenter',()=>{ring.style.width='48px';ring.style.height='48px';ring.style.opacity='.5';});
-  el.addEventListener('mouseleave',()=>{ring.style.width='30px';ring.style.height='30px';ring.style.opacity='1';});
-});
+/* Simple cursor dot (desktop only, no hover scaling) */
+const dot=document.getElementById('dot');
+document.addEventListener('mousemove',e=>{dot.style.left=e.clientX+'px';dot.style.top=e.clientY+'px';});
 
-/* Open Book */
+/* Open Book — makes the full portfolio visible */
 function openBook(){
   const mc=document.getElementById('main-content');
   mc.classList.add('open');
-  // slight delay for scroll
-  setTimeout(()=>{},100);
 }
+
+/* Any nav link (About, Projects, Education...) should open the book
+   first (in case it's still closed) and then smooth-scroll to its section */
+document.querySelectorAll('.nav-links a').forEach(link=>{
+  link.addEventListener('click',e=>{
+    e.preventDefault();
+    openBook();
+    const targetId=link.getAttribute('href');
+    // tiny delay so the now-visible section has real layout/height before scrolling
+    requestAnimationFrame(()=>{
+      document.querySelector(targetId).scrollIntoView({behavior:'smooth'});
+    });
+  });
+});
 
 /* Nav active */
 window.addEventListener('scroll',()=>{
